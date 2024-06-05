@@ -38,72 +38,151 @@ const gameValues = [
     console.log(gameValues);
   };
   
-  const setMatrixAfterMove = (direction) => {
-      const logDirection = {
-          right: "Right",
-          left: "Left",
-          up: "Up",
-          down: "Down"
-      };
-  
-      const updateRowCol = (arr) => {
-          let currNum = 0;
-          let newArr = [];
-  
-          arr.forEach(value => {
-              if (value !== 0) {
-                  if (currNum === 0) {
-                      currNum = value;
-                  } else if (currNum === value) {
-                      newArr.push(currNum * 2);
-                      score += (currNum * 2);
-                      currNum = 0;
-                  } else {
-                      newArr.push(currNum);
-                      currNum = value;
-                  }
-              }
-          });
-  
-          if (currNum !== 0) {
-              newArr.push(currNum);
-          }
-  
-          while (newArr.length < 4) {
-              newArr.unshift(0);
-          }
-  
-          return newArr;
-      };
-  
-      const transform = {
-          right: (row) => row.slice().reverse(),
-          left: (row) => row.slice(),
-          up: (col) => col.slice().reverse(),
-          down: (col) => col.slice()
-      };
-  
-      const updateGameValues = (isRow, index, newArr) => {
-          if (isRow) {
-              gameValues[index] = newArr;
-          } else {
-              for (let i = 0; i < 4; i++) {
-                  gameValues[i][index] = newArr[i];
-              }
-          }
-      };
-  
-      console.log(logDirection[direction]);
-  
-      const isRow = direction === "right" || direction === "left";
-      for (let i = 0; i < 4; i++) {
-          let arr = isRow ? gameValues[i] : gameValues.map(row => row[i]);
-          let transformedArr = transform[direction](arr);
-          let newArr = updateRowCol(transformedArr);
-          if (direction === "right" || direction === "up") newArr.reverse();
-          updateGameValues(isRow, i, newArr);
-      }
-  };
+  let setMatrixAfterMove = (direction) => {
+    if (direction === "right") {
+        console.log("Right");
+        for (let row = 0; row < 4; row++) {
+            let currNum = 0;
+            let newRow = [];
+
+            for (let col = 0; col < 4; col++) {
+                let value = gameValues[row][col];
+                if (value !== 0) {
+                    if (currNum === 0) {
+                        currNum = value;
+                    } 
+                    else if (currNum === value) {
+                        newRow.push(currNum * 2);
+                        console.log("currNum is: ", currNum);
+                        console.log("score is: ", score);
+                        score += (currNum * 2);
+                        currNum = 0;
+                    } 
+                    else {
+                        newRow.push(currNum);
+                        currNum = value;
+                    }
+                }
+            }
+
+            if (currNum !== 0) {
+                newRow.push(currNum);
+            }
+
+            while (newRow.length < 4) {
+                newRow.unshift(0);
+            }
+
+            gameValues[row] = newRow.slice(); //assigns the new row to the gameValues
+        }
+    }
+
+    if (direction === "left") {
+        console.log("Left");
+        for (let row = 0; row < 4; row++) {
+            let currNum = 0;
+            let newRow = [];
+
+            for (let col = 3; col >= 0; col--) {
+                let value = gameValues[row][col];
+                if (value !== 0) {
+                    if (currNum === 0) {
+                        currNum = value;
+                    } else if (currNum === value) {
+                        newRow.unshift(currNum * 2);
+                        score += (currNum * 2);
+                        currNum = 0;
+                    } else {
+                        newRow.unshift(currNum);
+                        currNum = value;
+                    }
+                }
+            }
+
+            if (currNum !== 0) {
+                newRow.unshift(currNum);
+            }
+
+            while (newRow.length < 4) {
+                newRow.push(0);
+            }
+
+            gameValues[row] = newRow.slice(); //assigns the new row to the gameValues
+        }
+    }
+
+    if (direction === "up") {
+        console.log("Up");
+        for (let col = 0; col < 4; col++) {
+            let currNum = 0;
+            let newCol = [];
+
+            for (let row = 3; row >= 0; row--) {
+                let value = gameValues[row][col];
+                if (value !== 0) {
+                    if (currNum === 0) {
+                        currNum = value;
+                    } else if (currNum === value) {
+                        newCol.unshift(currNum * 2);
+                        score += (currNum * 2);
+                        currNum = 0;
+                    } else {
+                        newCol.unshift(currNum);
+                        currNum = value;
+                    }
+                }
+            }
+
+            if (currNum !== 0) {
+                newCol.unshift(currNum);
+            }
+
+            while (newCol.length < 4) {
+                newCol.push(0);
+            }
+
+            for (let row = 0; row < 4; row++) {
+                gameValues[row][col] = newCol[row];
+            }
+        }
+    }
+
+    if (direction === "down") {
+        console.log("Down");
+        for (let col = 0; col < 4; col++) {
+            let currNum = 0;
+            let newCol = [];
+
+            for (let row = 0; row < 4; row++) {
+                let value = gameValues[row][col];
+                if (value !== 0) {
+                    if (currNum === 0) {
+                        currNum = value;
+                    } else if (currNum === value) {
+                        newCol.push(currNum * 2);
+                        score += (currNum * 2);
+                        currNum = 0;
+                    } else {
+                        newCol.push(currNum);
+                        currNum = value;
+                    }
+                }
+            }
+
+            if (currNum !== 0) {
+                newCol.push(currNum);
+            }
+
+            while (newCol.length < 4) {
+                newCol.unshift(0);
+            }
+
+            for (let row = 0; row < 4; row++) {
+                gameValues[row][col] = newCol[row];
+            }
+        }
+    }
+}
   
   
   //The game will end when for each element in the 2D array, no element has the same value as its adjacent element. (Because if it did then we
