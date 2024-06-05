@@ -118,11 +118,11 @@ const gameValues = [
                   (col > 0 && gameValues[row][col - 1] === value) ||
                   (col < 3 && gameValues[row][col + 1] === value)
               ) {
-                  return true;
+                  return false;
               }
           }
       }
-      return false;
+      return true;
   };
   
   
@@ -156,7 +156,7 @@ const gameValues = [
     let zeroPositions = getZeroPositions();
     let countOfZeros = zeroPositions.length;
     if (countOfZeros === 0) {
-      if (!isGameEnd()) {
+      if (isGameEnd()) {
         showGameOver();
       }
     } else {
